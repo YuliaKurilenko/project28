@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Advertisements</h1>
+{% if user.is_authenticated %}
+    <a href="{% url 'board:add_advertisement' %}"><button>Add Advertisement</button></a>
+{% endif %}
+<ul>
+  {% for advertisement in advertisements %}
+    <li>
+      <a href="{% url 'board:advertisement_detail' pk=advertisement.pk %}">{{ advertisement.title }}</a>&emsp;&emsp;&emsp;
+      <span style="color: green; size: 10px; font-style: italic">  автор: {{ advertisement.author.username }} </span>
+    </li>
+  {% endfor %}
+</ul>
+
+ <hr>
+               <div class="pagination">
+    {% if advertisements.has_other_pages %}
+        {% if advertisements.has_previous %}
+        <a href="?page={{ advertisements.previous_page_number }}&pag={{ pag }}">&lt;&lt;</a>
+        {% endif %}
+
+        {% for i in advertisements.paginator.page_range %}
+            {% if advertisements.number == i %}
+                <b>{{ i }}</b>
+            {% else %}
+                <a href="?page={{ i }}&pag={{ pag }}">{{ i }}</a>
+            {% endif%}
+        {% endfor %}
+
+        {% if advertisements.has_next %}
+           <a href="?page={{ advertisements.next_page_number }}&pag={{ pag }}">&gt;&gt;</a>
+        {% endif %}
+    {% endif %}
+                </div>
+
+
+
+{% endblock %}
